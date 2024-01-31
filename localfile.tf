@@ -8,6 +8,6 @@ resource "local_file" "inventory" {
   })
 
   provisioner "local-exec" {
-    command = "ANSIBLE_CONFIG=/etc/ansible/ansible.cfg ansible-playbook /home/allon/certification_devopsschool/BuildDeploy.yaml"
+    command = "ANSIBLE_CONFIG=/etc/ansible/ansible.cfg  ansible-playbook /home/allon/certification_devopsschool/BuildDeploy.yaml"
   }
  }
