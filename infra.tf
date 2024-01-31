@@ -18,7 +18,7 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-     user-data = "${file("/home/allon/lesson14/lesson14/meta.txt")}"
+     user-data = "${file("/home/allon/certification_devopsschool/meta.txt")}"
  #   ssh-keys = "ubuntu:${file("/home/allon/.ssh/id_rsa.pub")}"
   }
 
@@ -44,7 +44,7 @@ resource "yandex_compute_instance" "vm-2" {
   }
 
   metadata = {
-     user-data = "${file("/home/allon/lesson14/lesson14/meta.txt")}"
+     user-data = "${file("/home/allon/certification_devopsschool/meta.txt")}"
 #    ssh-keys = "ubuntu:${file("/home/allon/.ssh/id_rsa.pub")}"
   }
 }
