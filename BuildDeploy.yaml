@@ -1,0 +1,89 @@
+---
+- name: provisioning builder
+  hosts: builder
+  become: yes
+
+  tasks:
+  - name: Ensure jdk package is present
+    apt:
+     name: default-jdk
+     state: present
+  
+  - name: Ensure maven package is present
+    apt:
+     name: maven
+     state: present
+
+  - name: Ensure git package is present
+    apt:
+     name: git
+     state: present
+  - name: clone java project
+    git:
+      repo: https://github.com/santoshkatageri/Java-Mysql-Simple-Login-Web-application.git
+      dest: /home/allon/jdk/Login
+      clone: yes
+      update: yes
+  - name: build app
+    shell: cd /home/allon/jdk/Login; mvn package
+
+  - name: ensure private key and public one are present
+    ansible.builtin.copy:
+      src: /home/allon/.ssh/id_rsa
+      dest: /home/allon/.ssh/
+      owner: allon
+      group: allon
+      mode: '0600'
+  
+
+
+  - name: Specifying a destination path
+    ansible.builtin.fetch:
+      src: /home/allon/jdk/Login/target/LoginWebApp.war
+      dest: /home/allon/.ansible/tmp/
+      flat: yes
+ 
+
+
+- name: provisioning prod
+  hosts: prod
+  become: yes
+
+  tasks: 
+  - name: Ensure tomcat9 package is present
+    apt:
+     name: tomcat9
+     state: present
+
+  - name: ensure private key and public one are present
+    ansible.builtin.copy:
+      src: /home/allon/.ssh/id_rsa
+      dest: /home/allon/.ssh/
+      owner: allon
+      group: allon
+      mode: '0600' 
+
+- name: provisioning app
+  hosts: prod
+  become: yes
+
+  tasks:
+  - name: Ensure LoginWebApp.war is present
+    ansible.builtin.copy:
+      src: /home/allon/.ansible/tmp/LoginWebApp.war 
+      dest: /var/lib/tomcat9/webapps/
+      owner: allon
+      group: allon
+      mode: '777' 
+
+- name: provisioning prod
+  hosts: prod
+  become: yes
+
+  tasks: 
+  - name: Ensure tomcat service is started
+    service:
+     name: tomcat9
+     state: started
+
+   
