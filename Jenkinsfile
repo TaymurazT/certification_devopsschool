@@ -1,7 +1,6 @@
 pipeline {
     agent {
         label "main"
-        
     }
     tools {
         terraform 'Terra'
